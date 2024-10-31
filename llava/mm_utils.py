@@ -210,7 +210,7 @@ def get_model_name_from_path(model_path):
     if model_paths[-1].startswith('checkpoint-'):
         return model_paths[-4] + "_" + model_paths[-1]
     else:
-        return model_paths[-1]
+        return model_paths[-3]
 
 class KeywordsStoppingCriteria(StoppingCriteria):
     def __init__(self, keywords, tokenizer, input_ids):
