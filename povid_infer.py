@@ -65,7 +65,6 @@ def eval_model(args):
                     keywords = [stop_str]
                     stopping_criteria = KeywordsStoppingCriteria(keywords, tokenizer, input_ids)
 
-                    print(input_ids, image_tensor)
                     with torch.inference_mode():
                         output_ids = model.generate(
                             input_ids=input_ids,
