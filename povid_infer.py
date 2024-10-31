@@ -64,8 +64,8 @@ def eval_model(args):
                     stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
                     keywords = [stop_str]
                     stopping_criteria = KeywordsStoppingCriteria(keywords, tokenizer, input_ids)
-                    print(input_ids)
                     with torch.inference_mode():
+                        print(input_ids)
                         output_ids = model.generate(
                             input_ids=input_ids,
                             images=image_tensor.unsqueeze(0).half().cuda(),
