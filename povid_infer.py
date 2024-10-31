@@ -58,6 +58,7 @@ def eval_model(args):
                     conv.append_message(conv.roles[0], qs)
                     conv.append_message(conv.roles[1], None)
                     prompt = conv.get_prompt()
+                    print(prompt)
                     input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).cuda()
                     image = Image.open(os.path.join(args.input_dir, filename))
                     image_tensor = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0].to(device)
