@@ -42,7 +42,7 @@ def eval_model(args):
 
     input_dir = args.input_dir
     output_file = args.output_file
-    nu = 0
+    nu = -10
     with torch.no_grad():
         with open(output_file, "a+") as f:
             for filename in tqdm(os.listdir(input_dir)):
@@ -82,7 +82,7 @@ def eval_model(args):
                         print(f'[Warning] {n_diff_input_output} output_ids are not the same as the input_ids')
                     outputs = tokenizer.batch_decode(output_ids[:, input_token_len:], skip_special_tokens=True)[0]
                     outputs = outputs.strip()
-                    result = {"id": filename, "question": cur_prompt, "answer": outputs, "model": "llava_lora_05_05_step_500"}
+                    result = {"image_id": filename, "question": cur_prompt, "caption": outputs, "model": "llava_lora_05_05_step_500"}
                     json.dump(result, f)
                     f.write('\n')
                     f.flush()
