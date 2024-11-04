@@ -30,6 +30,33 @@ def get_chunk(lst, n, k):
     chunks = split_list(lst, n)
     return chunks[k]
 
+def get_img_id_to_path_dict(input_dir):
+    instances_val = os.path.join(input_dir, "annotations", "instances_val2014.json")
+    instances_train = os.path.join(input_dir, "annotations", "instances_train2014.json")
+    
+    captions_val = os.path.join(input_dir, "annotations", "captions_val2014.json")
+    captions_train = os.path.join(input_dir, "annotations", "captions_train2014.json")
+
+    val_img_dir = os.path.join(input_dir, "val2014")
+    train_img_dir = os.path.join(input_dir, "train2014")
+
+    if not os.path.exists(instances_val) or not os.path.exists(instances_train) or not os.path.exists(captions_train) or not os.path.exists(captions_val):
+        raise Exception("Make sure input_dir to coco is correct. It must have annotations folder containing instances_val2014.json, instances_train2014.json, captions_val2014.json, captions_train2014.json")
+    
+    if not os.path.exists(val_img_dir) or not os.path.exists(train_img_dir):
+        raise Exception("Make sure input_dir to coco is correct. It must have the following folders containing images: train2014 and val2014")
+
+    img_id_to_path = {}
+
+    for file in [instances_val, instances_train, captions_val, captions_train]:
+        image_dicts = json.load(open(file, "r"))["images"]
+        img_dir = train_img_dir if "train" in file else val_img_dir
+            
+        for image_dict in image_dicts:
+            img_id_to_path[image_dict["id"]] = os.path.join(img_dir, image_dict["file_name"])
+    
+    return img_id_to_path
+
 
 def eval_model(args):
     # Model
@@ -40,14 +67,17 @@ def eval_model(args):
     tokenizer, model, image_processor, context_len = load_pretrained_model(model_path, args.model_base, model_name)
     model = model.to(device)
 
+    img_id_to_path = get_img_id_to_path_dict(input_dir)
+
     input_dir = args.input_dir
     output_file = args.output_file
     nu = -10
     with torch.no_grad():
         with open(output_file, "a+") as f:
-            for filename in tqdm(os.listdir(input_dir)):
-                if filename.endswith((".jpg", ".jpeg", ".png")) and nu <= 0:
-                    if filename in open(output_file).read():continue
+            for image_id in tqdm(list(img_id_to_path.keys())):
+                file_path = img_id_to_path[image_id]
+                if file_path.endswith((".jpg", ".jpeg", ".png")) and nu <= 0:
+                    if file_path in open(output_file).read():continue
                     qs = 'Describe this image.'
                     cur_prompt = qs
                     if model.config.mm_use_im_start_end:
@@ -59,7 +89,7 @@ def eval_model(args):
                     conv.append_message(conv.roles[1], None)
                     prompt = conv.get_prompt()
                     input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).cuda()
-                    image = Image.open(os.path.join(args.input_dir, filename))
+                    image = Image.open(file_path)
                     image_tensor = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0].to(device)
                     stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
                     keywords = [stop_str]
@@ -82,7 +112,7 @@ def eval_model(args):
                         print(f'[Warning] {n_diff_input_output} output_ids are not the same as the input_ids')
                     outputs = tokenizer.batch_decode(output_ids[:, input_token_len:], skip_special_tokens=True)[0]
                     outputs = outputs.strip()
-                    result = {"image_id": filename, "question": cur_prompt, "caption": outputs, "model": "llava_lora_05_05_step_500"}
+                    result = {"image_id": image_id, "question": cur_prompt, "caption": outputs, "model": "llava_lora_05_05_step_500", "image_name" : file_path.split("/")[-1]} 
                     json.dump(result, f)
                     f.write('\n')
                     f.flush()
