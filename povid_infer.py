@@ -48,7 +48,7 @@ def get_img_id_to_path_dict(input_dir):
 
     img_id_to_path = {}
 
-    for file in [instances_val, instances_train, captions_val, captions_train]:
+    for file in [instances_val, captions_val]:#, instances_train, captions_train]:
         image_dicts = json.load(open(file, "r"))["images"]
         img_dir = train_img_dir if "train" in file else val_img_dir
             
