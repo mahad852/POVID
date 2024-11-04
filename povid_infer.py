@@ -77,7 +77,7 @@ def eval_model(args):
         with open(output_file, "a+") as f:
             for image_id in tqdm(list(img_id_to_path.keys())):
                 file_path = img_id_to_path[image_id]
-                if file_path.endswith((".jpg", ".jpeg", ".png")) and nu <= 0:
+                if file_path.endswith((".jpg", ".jpeg", ".png")):# and nu <= 0:
                     if file_path in open(output_file).read():continue
                     qs = 'Describe this image.'
                     cur_prompt = qs
