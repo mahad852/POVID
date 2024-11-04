@@ -41,7 +41,7 @@ def get_img_id_to_path_dict(input_dir):
     train_img_dir = os.path.join(input_dir, "train2014")
 
     if not os.path.exists(instances_val) or not os.path.exists(instances_train) or not os.path.exists(captions_train) or not os.path.exists(captions_val):
-        raise Exception("Make sure input_dir to coco is correct. It must have annotations folder containing instances_val2014.json, instances_train2014.json, captions_val2014.json, captions_train2014.json")
+        raise Exception("Make sure input_dir to coco is correct. It must have an annotations folder containing instances_val2014.json, instances_train2014.json, captions_val2014.json, captions_train2014.json")
     
     if not os.path.exists(val_img_dir) or not os.path.exists(train_img_dir):
         raise Exception("Make sure input_dir to coco is correct. It must have the following folders containing images: train2014 and val2014")
@@ -67,10 +67,11 @@ def eval_model(args):
     tokenizer, model, image_processor, context_len = load_pretrained_model(model_path, args.model_base, model_name)
     model = model.to(device)
 
-    img_id_to_path = get_img_id_to_path_dict(input_dir)
-
     input_dir = args.input_dir
     output_file = args.output_file
+
+    img_id_to_path = get_img_id_to_path_dict(input_dir)
+
     nu = -10
     with torch.no_grad():
         with open(output_file, "a+") as f:
