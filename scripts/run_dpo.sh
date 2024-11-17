@@ -1,13 +1,10 @@
-# conda env 
-source activate [your env path]/envs/POVID
-cd ../
-deepspeed llava/train/train_dpo.py \
+python llava/train/train_dpo.py \
     --lora_enable True --lora_r 128 --lora_alpha 256 --mm_projector_lr 2e-5 \
     --deepspeed ./scripts/zero2.json \
-    --model_name_or_path ./checkpoint/llava-v1.5-7b/ \
+    --model_name_or_path /home/mali2/LLaVA/llava_model \
     --version v1 \
-    --data_path ./data/POVID_preference_data_for_VLLMs.json \
-    --image_folder ./data/coco \
+    --data_path /home/mali2/datasets/POVID/POVID_preference_data_for_VLLMs_version_1.json \
+    --image_folder /home/mali2/datasets/POVID \
     --vision_tower openai/clip-vit-large-patch14-336 \
     --mm_projector_type mlp2x_gelu \
     --mm_vision_select_layer -2 \
@@ -30,7 +27,7 @@ deepspeed llava/train/train_dpo.py \
     --warmup_ratio 0.03 \
     --lr_scheduler_type "cosine" \
     --logging_steps 1 \
-    --report_to wandb
+    --report_to wandb \
     --tf32 True \
     --model_max_length 1024 \
     --gradient_checkpointing True \
