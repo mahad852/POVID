@@ -1,10 +1,10 @@
-python llava/train/train_dpo.py \
+deepspeed llava/train/train_dpo.py \
     --lora_enable True --lora_r 128 --lora_alpha 256 --mm_projector_lr 2e-5 \
     --deepspeed ./scripts/zero2.json \
     --model_name_or_path /home/mali2/LLaVA/llava_model \
     --version v1 \
     --data_path /home/mali2/datasets/POVID/POVID_preference_data_for_VLLMs_version_1.json \
-    --image_folder /home/mali2/datasets/POVID \
+    --image_folder /home/mali2/datasets/POVID/data \
     --vision_tower openai/clip-vit-large-patch14-336 \
     --mm_projector_type mlp2x_gelu \
     --mm_vision_select_layer -2 \
@@ -31,5 +31,5 @@ python llava/train/train_dpo.py \
     --tf32 False \
     --model_max_length 1024 \
     --gradient_checkpointing True \
-    --dataloader_num_workers 4 \
+    --dataloader_num_workers 1 \
     --lazy_preprocess True \
