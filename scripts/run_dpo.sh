@@ -28,7 +28,7 @@ python llava/train/train_dpo.py \
     --lr_scheduler_type "cosine" \
     --logging_steps 1 \
     --report_to wandb \
-    --tf32 True \
+    --tf32 False \
     --model_max_length 1024 \
     --gradient_checkpointing True \
     --dataloader_num_workers 4 \
