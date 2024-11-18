@@ -42,7 +42,7 @@ import warnings
 warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 
-wandb.login(key="your key")
+wandb.login(key="fc60e7d122c7fe5002dace55ec91d357f00f9bdc")
 local_rank = None
 
 
