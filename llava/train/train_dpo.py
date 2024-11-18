@@ -37,6 +37,10 @@ from PIL import Image
 import numpy as np
 from PIL import ImageFilter
 import wandb
+import warnings
+
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 
 wandb.login(key="your key")
 local_rank = None
