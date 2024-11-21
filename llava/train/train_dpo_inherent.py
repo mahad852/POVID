@@ -38,7 +38,7 @@ import numpy as np
 from PIL import ImageFilter
 import wandb
 
-wandb.login(key="your key")
+wandb.login(key="fc60e7d122c7fe5002dace55ec91d357f00f9bdc")
 local_rank = None
 
 
