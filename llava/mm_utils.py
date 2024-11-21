@@ -207,6 +207,11 @@ def tokenizer_image_token(prompt, tokenizer, image_token_index=IMAGE_TOKEN_INDEX
 def get_model_name_from_path(model_path):
     model_path = model_path.strip("/")
     model_paths = model_path.split("/")
+    
+    for mp in model_paths:
+        if "povid" in mp.lower():
+            return f"{mp}_llava_lora"
+    
     if model_paths[-1].startswith('checkpoint-'):
         return model_paths[-4] + "_" + model_paths[-1]
     else:
