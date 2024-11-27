@@ -847,6 +847,7 @@ def train():
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
                 low_cpu_mem_usage=True,
+                device_map='auto',
                 **bnb_model_from_pretrained_args
             )
     else:
@@ -910,6 +911,7 @@ def train():
             model_max_length=training_args.model_max_length,
             padding_side="right",
             low_cpu_mem_usage=True,
+            device_map='auto',
             use_fast=False,
         )
 
@@ -981,6 +983,7 @@ def train():
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
                 low_cpu_mem_usage=True,
+                device_map='auto',
                 **bnb_model_from_pretrained_args
             )
     else:
