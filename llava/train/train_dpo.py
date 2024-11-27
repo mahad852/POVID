@@ -900,6 +900,7 @@ def train():
             model_args.model_name_or_path,
             cache_dir=training_args.cache_dir,
             model_max_length=training_args.model_max_length,
+            low_cpu_mem_usage=True,
             padding_side="right"
         )
     else:
@@ -908,6 +909,7 @@ def train():
             cache_dir=training_args.cache_dir,
             model_max_length=training_args.model_max_length,
             padding_side="right",
+            low_cpu_mem_usage=True,
             use_fast=False,
         )
 
@@ -978,6 +980,7 @@ def train():
             model_ref = LlavaLlamaForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
+                low_cpu_mem_usage=True,
                 **bnb_model_from_pretrained_args
             )
     else:
