@@ -846,6 +846,7 @@ def train():
             model = LlavaLlamaForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
+                low_cpu_mem_usage=True
                 **bnb_model_from_pretrained_args
             )
     else:
