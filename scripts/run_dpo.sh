@@ -1,4 +1,4 @@
-python llava/train/train_dpo.py \
+python -m pdb llava/train/train_dpo.py \
     --lora_enable True --lora_r 128 --lora_alpha 256 --mm_projector_lr 2e-5 \
     --model_name_or_path /home/mali2/LLaVA/llava_model \
     --version v1 \
@@ -32,4 +32,3 @@ python llava/train/train_dpo.py \
     --gradient_checkpointing True \
     --dataloader_num_workers 1 \
     --lazy_preprocess True \
-    --device cuda
