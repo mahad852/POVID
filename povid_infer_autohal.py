@@ -102,7 +102,7 @@ def eval_model(args):
             input_token_len = input_ids.shape[1]
             outputs = tokenizer.batch_decode(output_ids[:, input_token_len:], skip_special_tokens=True)[0]
             outputs = outputs.strip()
-            result = {"image_id": id, "prompt": cur_prompt, "response": outputs, "model": "llava_lora_05_05_step_500", "image_name" : file_path.split(os.sep)[-3:], "ground_truth": answer}
+            result = {"image_id": id, "prompt": cur_prompt, "response": outputs, "model": "llava_lora_05_05_step_500", "image_name" : '/'.join(file_path.split(os.sep)[-3:]), "ground_truth": answer}
             results.append(result)
 
         with open(output_file, "w") as f:
