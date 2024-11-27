@@ -849,18 +849,24 @@ def train():
                 model_args.model_name_or_path,
                 config=config,
                 cache_dir=training_args.cache_dir,
+                low_cpu_mem_usage=True,
+                device_map='auto',
                 **bnb_model_from_pretrained_args
             )
         else:
             model = LlavaLlamaForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
+                low_cpu_mem_usage=True,
+                device_map='auto',
                 **bnb_model_from_pretrained_args
             )
     else:
         model = transformers.LlamaForCausalLM.from_pretrained(
             model_args.model_name_or_path,
             cache_dir=training_args.cache_dir,
+            low_cpu_mem_usage=True,
+            device_map='auto',
             **bnb_model_from_pretrained_args
         )
     model.config.use_cache = False
@@ -907,6 +913,8 @@ def train():
             model_args.model_name_or_path,
             cache_dir=training_args.cache_dir,
             model_max_length=training_args.model_max_length,
+            low_cpu_mem_usage=True,
+            device_map='auto',
             padding_side="right"
         )
     else:
@@ -915,6 +923,8 @@ def train():
             cache_dir=training_args.cache_dir,
             model_max_length=training_args.model_max_length,
             padding_side="right",
+            low_cpu_mem_usage=True,
+            device_map='auto',
             use_fast=False,
         )
 
@@ -979,18 +989,24 @@ def train():
                 model_args.model_name_or_path,
                 config=config,
                 cache_dir=training_args.cache_dir,
+                low_cpu_mem_usage=True,
+                device_map='auto',
                 **bnb_model_from_pretrained_args
             )
         else:
             model_ref = LlavaLlamaForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
+                low_cpu_mem_usage=True,
+                device_map='auto',
                 **bnb_model_from_pretrained_args
             )
     else:
         model_ref = transformers.LlamaForCausalLM.from_pretrained(
             model_args.model_name_or_path,
             cache_dir=training_args.cache_dir,
+            low_cpu_mem_usage=True,
+            device_map='auto',
             **bnb_model_from_pretrained_args
         )
     model_ref.config.use_cache = False
