@@ -39,8 +39,6 @@ from PIL import ImageFilter
 import wandb
 import warnings
 
-from memory_profiler import profile
-
 warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 
@@ -807,7 +805,6 @@ def make_supervised_data_module(tokenizer: transformers.PreTrainedTokenizer,
                 eval_dataset=None,
                 data_collator=data_collator)
 
-@profile
 def train():
     global local_rank
 
