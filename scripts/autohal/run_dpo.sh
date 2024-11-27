@@ -2,7 +2,7 @@ python llava/train/train_dpo.py \
     --lora_enable True --lora_r 128 --lora_alpha 256 --mm_projector_lr 2e-5 \
     --model_name_or_path /home/mali2/POVID/checkpoint/output/POVID_stage_one_merged \
     --version v1 \
-    --data_path /home/mali2/datasets/AutoHal/autohal_spatial_relationship_preference_data_train_mod.json \
+    --data_path /home/mali2/datasets/AutoHal/autohal_spatial_relationship_preference_data_train.json \
     --image_folder /home/mali2/datasets/AutoHal \
     --vision_tower openai/clip-vit-large-patch14-336 \
     --mm_projector_type mlp2x_gelu \
