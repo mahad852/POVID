@@ -32,3 +32,4 @@ python llava/train/train_dpo.py \
     --gradient_checkpointing True \
     --dataloader_num_workers 1 \
     --lazy_preprocess True \
+    --device cuda
