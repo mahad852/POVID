@@ -1,4 +1,4 @@
-python llava/train/train_dpo.py \
+python -m memory_profiler llava/train/train_dpo.py \
     --lora_enable True --lora_r 128 --lora_alpha 256 --mm_projector_lr 2e-5 \
     --model_name_or_path /home/mali2/POVID/checkpoint/output/POVID_stage_one_merged \
     --version v1 \
