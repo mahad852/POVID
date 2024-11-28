@@ -1013,8 +1013,8 @@ def train():
                         module = module.to(torch.bfloat16)
     data_module = make_supervised_data_module(tokenizer=tokenizer,
                                               data_args=data_args)
-    from peft import PeftModel
-    from trl import DPOTrainer
+    # from peft import PeftModel
+    # from trl import DPOTrainer
 
     trainer = LLaVATrainer(
         model,
