@@ -1,6 +1,6 @@
 python llava/train/train_dpo_inherent.py \
     --lora_enable True --lora_r 128 --lora_alpha 256 --mm_projector_lr 2e-5 \
-    --model_name_or_path ./checkpoint/output/AutoHal_stage_one_merged \
+    --model_name_or_path ./checkpoint/output/AutoHal_stage_one_merged_llava \
     --version v1 \
     --data_path /home/mali2/datasets/AutoHal/autohal_spatial_relationship_preference_data_train_mod.json \
     --image_folder /home/mali2/datasets/AutoHal \
