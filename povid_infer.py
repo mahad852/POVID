@@ -123,7 +123,7 @@ def eval_model(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model-path", type=str, default="[your final stage lora ckpt path]")
-    parser.add_argument("--model-base", type=str, default="[your first stage ckpt path]")
+    parser.add_argument("--model-base", type=str, default=None)
     parser.add_argument("--input_dir", type=str, default="./data/coco")
     parser.add_argument("--output_file", type=str, default="[your output path]")
     parser.add_argument("--conv-mode", type=str, default="v1")
