@@ -77,7 +77,7 @@ def eval_model(args):
         with open(output_file, "a+") as f:
             for image_id in tqdm(list(img_id_to_path.keys())):
                 file_path = img_id_to_path[image_id]
-                if file_path.endswith((".jpg", ".jpeg", ".png")):# and nu <= 0:
+                if file_path.endswith((".jpg", ".jpeg", ".png")) and nu <= 0:
                     if file_path in open(output_file).read():continue
                     qs = 'Describe this image.'
                     cur_prompt = qs
@@ -111,7 +111,7 @@ def eval_model(args):
                     n_diff_input_output = (input_ids != output_ids[:, :input_token_len]).sum().item()
                     # if n_diff_input_output > 0:
                     #     print(f'[Warning] {n_diff_input_output} output_ids are not the same as the input_ids')
-                    outputs = tokenizer.batch_decode(output_ids[:, input_token_len:], skip_special_tokens=True)[0]
+                    outputs = tokenizer.batch_decode(output_ids, skip_special_tokens=True)[0]
                     outputs = outputs.strip()
                     result = {"image_id": image_id, "question": cur_prompt, "caption": outputs, "model": "llava_lora_05_05_step_500", "image_name" : file_path.split("/")[-1]} 
                     json.dump(result, f)
