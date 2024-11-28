@@ -70,9 +70,6 @@ def eval_model(args):
     nu = -10
     with torch.no_grad():
         for (id, file_path, qs, answer) in tqdm(dataset):
-            if nu > 0:
-                break
-
             if not file_path.endswith((".jpg", ".jpeg", ".png")): continue # and nu <= 0:
             cur_prompt = qs
             if model.config.mm_use_im_start_end:
@@ -83,8 +80,6 @@ def eval_model(args):
             conv.append_message(conv.roles[0], qs)
             conv.append_message(conv.roles[1], None)
             prompt = conv.get_prompt()
-
-            print(prompt)
 
             input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).cuda()
             image = Image.open(file_path)
@@ -110,7 +105,6 @@ def eval_model(args):
             result = {"image_id": id, "prompt": cur_prompt, "response": outputs, "model": "llava_lora_05_05_step_500", "image_name" : '/'.join(file_path.split(os.sep)[-3:]), "ground_truth": answer}
             results.append(result)
 
-            nu += 1
 
         with open(output_file, "w") as f:
             json.dump(results, f)
