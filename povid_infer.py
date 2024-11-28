@@ -72,7 +72,7 @@ def eval_model(args):
 
     img_id_to_path = get_img_id_to_path_dict(input_dir)
 
-    nu = -10
+    nu = -10000
     with torch.no_grad():
         with open(output_file, "a+") as f:
             for image_id in tqdm(list(img_id_to_path.keys())):
