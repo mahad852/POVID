@@ -211,7 +211,7 @@ def get_model_name_from_path(model_path):
     for mp in model_paths:
         if "llava" in mp.lower():
             return f"{mp.lower()}"
-        if "povid" in mp.lower() or "autohal" in mp.lower():
+        if "povid" in mp.lower() or "autohal" in mp.lower() or "rlaif-v" in mp.lower():
             return f"{mp}_llava_lora"
     
     if model_paths[-1].startswith('checkpoint-'):
