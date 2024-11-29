@@ -63,6 +63,7 @@ def eval_model(args):
 
     with torch.no_grad():
         for line in tqdm(json_data):
+            qs = line["question"]
             if model.config.mm_use_im_start_end:
                 qs = DEFAULT_IM_START_TOKEN + DEFAULT_IMAGE_TOKEN + DEFAULT_IM_END_TOKEN + '\n' + qs
             else:
