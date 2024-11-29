@@ -74,7 +74,7 @@ def eval_model(args):
             prompt = conv.get_prompt()
 
             input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).cuda()
-            image = load_image(line["image_src"])
+            image = load_image(os.path.join(args.input_dir, line["image_src"].split('/')[-1]))
             image_tensor = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0].to(device)
             stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
             keywords = [stop_str]
@@ -107,6 +107,7 @@ if __name__ == "__main__":
     parser.add_argument("--model-path", type=str, default="[your final stage lora ckpt path]")
     parser.add_argument("--model-base", type=str, default=None)
     parser.add_argument("--test_file", type=str)
+    parser.add_argument("--input_dir", type=str)
     parser.add_argument("--output_file", type=str, default="[your output path]")
     parser.add_argument("--conv-mode", type=str, default="v1")
     parser.add_argument("--num-chunks", type=int, default=1)
