@@ -2,7 +2,7 @@ python llava/train/train_dpo.py \
     --lora_enable False --lora_r 128 --lora_alpha 256 --mm_projector_lr 2e-5 \
     --model_name_or_path /home/mali2/LLaVA/llava_model \
     --version v1 \
-    --data_path /home/mali2/datasets/POVID/POVID_preference_data_for_VLLMs_version_1.json \
+    --data_path /home/mali2/datasets/POVID/POVID_preference_data_for_VLLMs_reduced.json \
     --image_folder /home/mali2/datasets/POVID/data \
     --vision_tower openai/clip-vit-large-patch14-336 \
     --mm_projector_type mlp2x_gelu \
@@ -31,4 +31,6 @@ python llava/train/train_dpo.py \
     --model_max_length 1024 \
     --gradient_checkpointing True \
     --dataloader_num_workers 1 \
-    --lazy_preprocess True \
+    --lazy_preprocess True
+
+    #/home/mali2/datasets/POVID/POVID_preference_data_for_VLLMs_version_1.json
