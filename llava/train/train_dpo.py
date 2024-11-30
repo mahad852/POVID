@@ -895,6 +895,8 @@ def train():
                 print("to float16...")                
         rank0_print("Adding LoRA adapters...")
         model = get_peft_model(model, lora_config)
+    else:
+        lora_config = None
 
     if 'mpt' in model_args.model_name_or_path:
         tokenizer = transformers.AutoTokenizer.from_pretrained(
