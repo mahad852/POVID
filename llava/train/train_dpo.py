@@ -1020,6 +1020,7 @@ def train():
 
     trainer = LLaVATrainer(
         model,
+        beta=0.5,
         args=training_args,
         peft_config=lora_config,
         tokenizer=tokenizer,
