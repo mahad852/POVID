@@ -1,7 +1,7 @@
 #!/bin/bash
 # FILENAME:  fed_avg.slurm
 
-#SBATCH -A cis230083-gpu                # allocation name
+#SBATCH -A bio240254-gpu                # allocation name
 #SBATCH --nodes=1                       # Total # of nodes 
 #SBATCH --ntasks-per-node=1             # Number of MPI ranks per node (one rank per GPU)
 #SBATCH --gpus-per-node=4               # Number of GPUs per node
