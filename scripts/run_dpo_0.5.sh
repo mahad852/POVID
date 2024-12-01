@@ -1,6 +1,6 @@
 python llava/train/train_dpo.py \
     --lora_enable True --lora_r 128 --lora_alpha 256 --mm_projector_lr 2e-5 \
-    --model_name_or_path /home/mali2/LLaVA/llava_model \
+    --model_name_or_path /anvil/scratch/x-mali3/llava_model \
     --version v1 \
     --data_path /anvil/scratch/x-mali3/POVID/POVID_preference_data_for_VLLMs_version_1.json \
     --image_folder /anvil/scratch/x-mali3/POVID/data \
