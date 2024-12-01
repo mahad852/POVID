@@ -2,8 +2,8 @@ python llava/train/train_dpo.py \
     --lora_enable True --lora_r 128 --lora_alpha 256 --mm_projector_lr 2e-5 \
     --model_name_or_path /home/mali2/LLaVA/llava_model \
     --version v1 \
-    --data_path /home/mali2/datasets/POVID/POVID_preference_data_for_VLLMs_version_1.json \
-    --image_folder /home/mali2/datasets/POVID/data \
+    --data_path /anvil/scratch/x-mali3/POVID/POVID_preference_data_for_VLLMs_version_1.json \
+    --image_folder /anvil/scratch/x-mali3/POVID/data \
     --vision_tower openai/clip-vit-large-patch14-336 \
     --mm_projector_type mlp2x_gelu \
     --mm_vision_select_layer -2 \
