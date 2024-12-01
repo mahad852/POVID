@@ -146,6 +146,9 @@ class TrainingArguments(transformers.TrainingArguments):
     mm_projector_lr: Optional[float] = None
     group_by_modality_length: bool = field(default=False)
 
+@dataclass
+class DPOArguments:
+    beta: Optional[float] = field(default=0.1)
 
 def maybe_zero_3(param, ignore_status=False, name=None):
     from deepspeed import zero
@@ -809,8 +812,8 @@ def train():
     global local_rank
 
     parser = transformers.HfArgumentParser(
-        (ModelArguments, DataArguments, TrainingArguments))
-    model_args, data_args, training_args = parser.parse_args_into_dataclasses()
+        (ModelArguments, DataArguments, TrainingArguments, DPOArguments))
+    model_args, data_args, training_args, dpo_args = parser.parse_args_into_dataclasses()
     local_rank = training_args.local_rank
     compute_dtype = (torch.float16 if training_args.fp16 else (torch.bfloat16 if training_args.bf16 else torch.float32))
 
@@ -1020,7 +1023,7 @@ def train():
 
     trainer = LLaVATrainer(
         model,
-        beta=0.5,
+        beta=dpo_args.beta,
         args=training_args,
         peft_config=lora_config,
         tokenizer=tokenizer,
