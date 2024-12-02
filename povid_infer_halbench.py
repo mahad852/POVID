@@ -98,7 +98,7 @@ def eval_model(args):
                     inputs=input_ids,
                     images=image_tensor.unsqueeze(0).half().cuda() if image_tensor else None,
                     do_sample=True,
-                    temperature=args.temperature,
+                    temperature=float(args.temperature),
                     top_p= 1,
                     num_beams= 1,
                     output_attentions=True,
