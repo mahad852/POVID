@@ -85,7 +85,7 @@ def eval_model(args):
             conv.append_message(conv.roles[1], None)
             prompt = conv.get_prompt()
 
-            if file_path:
+            if file_path is not None:
                 input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).cuda()
             else:
                 input_ids = torch.tensor(tokenizer(prompt).input_ids, dtype=torch.long).unsqueeze(0).cuda()
@@ -126,7 +126,7 @@ if __name__ == "__main__":
     parser.add_argument("--conv-mode", type=str, default="v1")
     parser.add_argument("--num-chunks", type=int, default=1)
     parser.add_argument("--chunk-idx", type=int, default=0)
-    parser.add_argument("--temperature", type=float, default=0.0)
+    parser.add_argument("--temperature", type=float, default=0)
     parser.add_argument("--top_p", type=float, default=None)
     parser.add_argument("--num_beams", type=int, default=1)
     args = parser.parse_args()
