@@ -85,8 +85,11 @@ def eval_model(args):
             conv.append_message(conv.roles[1], None)
             prompt = conv.get_prompt()
 
-            input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).cuda()
-            
+            if file_path:
+                input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).cuda()
+            else:
+                input_ids = torch.tensor(tokenizer(prompt).input_ids, dtype=torch.long).unsqueeze(0).cuda()
+
             image = Image.open(file_path) if file_path is not None else None
             image_tensor = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0].to(device) if image is not None else None
 
