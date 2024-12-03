@@ -38,11 +38,17 @@ class AutoHal(Dataset):
             self.data = json.load(f)
         
         self.images_dir = images_dir
-        
+    
+    def is_visual_input_present(self, item) -> bool:
+        return int(item["visual_input"]) != 0
+ 
     def __getitem__(self, index):
         item = self.data[index]
 
-        img_path = os.path.join(self.images_dir, item["image_urls"][0])
+        img_path = None
+        if self.is_visual_input_present(item):
+            img_path = os.path.join(self.images_dir, item["image_urls"][0])
+
         prompt = item["prompt"]
 
         return img_path, prompt, item
@@ -78,14 +84,18 @@ def eval_model(args):
             conv.append_message(conv.roles[1], None)
             prompt = conv.get_prompt()
 
-            input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).cuda()
-            image = Image.open(file_path)
-            image_tensor = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0].to(device)
+            if file_path:
+                input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).cuda()
+            else:
+                input_ids = torch.tensor(tokenizer(prompt).input_ids, dtype=torch.long).unsqueeze(0).cuda()
+
+            image = Image.open(file_path) if file_path else None
+            image_tensor = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0].to(device) if image else None
 
             with torch.inference_mode():
                 output_ids = model.generate(
                     inputs=input_ids,
-                    images=image_tensor.unsqueeze(0).half().cuda(),
+                    images=image_tensor.unsqueeze(0).half().cuda() if image else None,
                     do_sample=args.temperature > 0,
                     temperature=args.temperature,
                     top_p= 1,
