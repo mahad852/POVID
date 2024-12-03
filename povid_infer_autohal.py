@@ -40,7 +40,11 @@ class AutoHal(Dataset):
         self.images_dir = images_dir
     
     def is_visual_input_present(self, item) -> bool:
-        return int(item["visual_input"]) != 0
+        if "visual_input" in item and int(item["visual_input"]) == 0:
+            return False
+        if "image_urls" not in item:
+            return False
+        return True
  
     def __getitem__(self, index):
         item = self.data[index]
