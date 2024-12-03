@@ -42,12 +42,10 @@ class AutoHal(Dataset):
     def __getitem__(self, index):
         item = self.data[index]
 
-        img_path = os.path.join(self.images_dir, item["image"])
-        id = item["id"]
-        prompt = item["conversations"][0]["value"]
-        answer = item["conversations"][1]["value"]
+        img_path = os.path.join(self.images_dir, item["image_urls"][0])
+        prompt = item["prompt"]
 
-        return id, img_path, prompt, answer
+        return img_path, prompt, item
 
 def eval_model(args):
     # Model
@@ -67,11 +65,10 @@ def eval_model(args):
 
     results = []
 
-    nu = -10
     with torch.no_grad():
-        for (id, file_path, qs, answer) in tqdm(dataset):
+        for (file_path, qs, item) in tqdm(dataset):
             if not file_path.endswith((".jpg", ".jpeg", ".png")): continue # and nu <= 0:
-            cur_prompt = qs
+
             if model.config.mm_use_im_start_end:
                 qs = DEFAULT_IM_START_TOKEN + DEFAULT_IMAGE_TOKEN + DEFAULT_IM_END_TOKEN + '\n' + qs
             else:
@@ -84,14 +81,12 @@ def eval_model(args):
             input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).cuda()
             image = Image.open(file_path)
             image_tensor = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0].to(device)
-            stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
-            keywords = [stop_str]
-            stopping_criteria = KeywordsStoppingCriteria(keywords, tokenizer, input_ids)            
+
             with torch.inference_mode():
                 output_ids = model.generate(
                     inputs=input_ids,
                     images=image_tensor.unsqueeze(0).half().cuda(),
-                    do_sample=True,
+                    do_sample=args.temperature > 0,
                     temperature=args.temperature,
                     top_p= 1,
                     num_beams= 1,
@@ -99,11 +94,10 @@ def eval_model(args):
                     # no_repeat_ngram_size=3, args.top_p args.num_beams
                     max_new_tokens=1024,
                     use_cache=True)
-            input_token_len = input_ids.shape[1]
             outputs = tokenizer.batch_decode(output_ids, skip_special_tokens=True)[0]
             outputs = outputs.strip()
-            result = {"image_id": id, "prompt": cur_prompt, "response": outputs, "model": "llava_lora_05_05_step_500", "image_name" : '/'.join(file_path.split(os.sep)[-3:]), "ground_truth": answer}
-            results.append(result)
+            item["response"] = outputs
+            results.append(item)
 
 
         with open(output_file, "w") as f:
@@ -119,7 +113,7 @@ if __name__ == "__main__":
     parser.add_argument("--conv-mode", type=str, default="v1")
     parser.add_argument("--num-chunks", type=int, default=1)
     parser.add_argument("--chunk-idx", type=int, default=0)
-    parser.add_argument("--temperature", type=float, default=0.2)
+    parser.add_argument("--temperature", type=float, default=0.0)
     parser.add_argument("--top_p", type=float, default=None)
     parser.add_argument("--num_beams", type=int, default=1)
     args = parser.parse_args()
